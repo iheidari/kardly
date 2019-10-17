@@ -10,6 +10,8 @@ const DefaultTheme = {
     secondary: '#546e7a',
     secondaryLight: '#819ca9',
     secondaryDark: '#29434e',
+    background: '#ddd',
+    backgroundContainer: '#fff',
     text: '#000',
     textOn: '#fff',
   },
