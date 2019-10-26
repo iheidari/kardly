@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import defaultTheme from 'src/themes/default';
-import styled from 'src/themes/styled';
+import styled from '@emotion/styled';
 import Base from '.';
 
 const Text = styled.div`
