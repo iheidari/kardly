@@ -1,5 +1,4 @@
 module.exports = {
-  parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   env: {
     browser: true,
     es6: true,
@@ -11,9 +10,10 @@ module.exports = {
     'prettier',
     'plugin:jest/recommended',
     'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/typescript',
     'prettier/react',
+    'react-app',
+    'plugin:import/errors',
+    'plugin:import/warnings',
   ],
   globals: {
     Atomics: 'readonly',
@@ -29,7 +29,6 @@ module.exports = {
   plugins: ['react', 'jest'],
   rules: {
     quotes: ['error', 'single', { allowTemplateLiterals: true }],
-    '@typescript-eslint/explicit-function-return-type': 'off',
     'import/no-extraneous-dependencies': ['error', { packageDir: ['.'] }], // ignore all package.json except the one in root folder
   },
   settings: {
@@ -38,18 +37,8 @@ module.exports = {
     },
     'import/resolver': {
       node: {
-        paths: ['.'],
+        moduleDirectory: ['node_modules', 'src/'],
       },
     },
   },
-  overrides: [
-    // https://github.com/eslint/typescript-eslint-parser/issues/437
-    // Disable no-undef rule for ts files
-    {
-      files: ['**/*.{ts, tsx}'],
-      rules: {
-        'no-undef': 'off',
-      },
-    },
-  ],
 };
