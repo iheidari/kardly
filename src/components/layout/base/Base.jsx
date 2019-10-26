@@ -1,20 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import { Global } from '@emotion/core';
-import ThemeProps from 'src/themes/types';
-import mainStyle from 'src/themes/style/main';
-import { ReactChildProp } from 'src/components/types';
+import mainStyle from 'themes/style/main';
 
-const Base: React.FC<ThemeProps & ReactChildProp> = ({
-  theme,
-  children,
-}: ThemeProps & ReactChildProp) => {
+const Base = ({ theme, children }) => {
   return (
     <ThemeProvider theme={theme}>
       <Global styles={mainStyle({ theme })} />
       {children}
     </ThemeProvider>
   );
+};
+
+Base.propTypes = {
+  theme: PropTypes.object.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default Base;
