@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { Chip } from '@material-ui/core';
 import styled from '@emotion/styled';
 import { removeMember } from 'util/array';
+import Tags from './Tags';
 
 const ChipsContainer = styled.div`
   margin: 10px 0;
 `;
-const StyledChips = styled(Chip)`
-  margin: 5px;
-`;
 
-const Tag = ({ className, tags, onChange }) => {
+const TagEditor = ({ className, tags, onChange }) => {
   const [tag, setTag] = useState('');
-  const [lastTag, setLastTag] = useState('');
+
+  const [activeTag, setActiveTag] = useState('');
 
   const handleDelete = (t) => onChange(removeMember(tags, t));
 
@@ -24,7 +22,7 @@ const Tag = ({ className, tags, onChange }) => {
 
       if (tag[tag.length - 1] === ',')
         newTag = tag.substring(0, tag.length - 1);
-      setLastTag(newTag);
+      setActiveTag(newTag);
       if (tags.indexOf(newTag) === -1) onChange([...tags, newTag]);
       setTag('');
     }
@@ -41,16 +39,6 @@ const Tag = ({ className, tags, onChange }) => {
     if (e.key === 'Escape') setTag('');
   };
 
-  const tagChips = tags.map((t) => (
-    <StyledChips
-      key={t}
-      varient={t === lastTag ? 'outlined' : null}
-      label={t}
-      onDelete={() => handleDelete(t)}
-      color="primary"
-    />
-  ));
-
   return (
     <div className={className}>
       <TextField
@@ -61,19 +49,21 @@ const Tag = ({ className, tags, onChange }) => {
         onKeyUp={handleKeyUp}
         onBlur={handleBlur}
       />
-      <ChipsContainer>{tagChips}</ChipsContainer>
+      <ChipsContainer>
+        <Tags tags={tags} activeTag={activeTag} onDelete={handleDelete} />
+      </ChipsContainer>
     </div>
   );
 };
 
-Tag.propTypes = {
+TagEditor.propTypes = {
   className: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-Tag.defaultProps = {
+TagEditor.defaultProps = {
   className: '',
 };
 
-export default Tag;
+export default TagEditor;

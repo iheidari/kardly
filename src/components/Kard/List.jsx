@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'api/axios';
-import MessageBar from 'components/basic/MessageBar/MessageBar';
+import MessageBar from 'components/MessageBar';
 import DeleteConfirmationModal from './Parts/DeleteConfirmationModal';
 import AddButton from './Parts/AddButton';
 import ListItems from './Parts/ListItems';
@@ -48,6 +48,19 @@ const List = () => {
   const handleDelete = () => deleteKard(kardToDeleteId);
   const handleConfirmationClose = () => setOpenConfirmation(false);
   const handleAddButtonClicked = () => history.push('/');
+  const handleStar = (id, star) => async () => {
+    if (id) {
+      try {
+        let result;
+        if (star) result = await axios.post(`/kard/remove-star/${id}`);
+        else result = await axios.post(`/kard/add-star/${id}`);
+
+        setKards(kards.map((kard) => (kard._id === id ? result.data : kard)));
+      } catch (error) {
+        setMessage(error.message);
+      }
+    }
+  };
 
   return (
     <>
@@ -55,6 +68,7 @@ const List = () => {
         kards={kards}
         onClick={handleSelect}
         onDelete={handleDeleteClick}
+        onStar={handleStar}
       />
       <MessageBar message={message} onClose={() => setMessage('')} />
       <DeleteConfirmationModal
