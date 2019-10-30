@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import styled from '@emotion/styled';
-import Tag from 'components/basic/Tag';
+import TagEditor from 'components/TagEditor';
 import Button from '@material-ui/core/Button';
 import axios from 'api/axios';
-import MessageBar from 'components/basic/MessageBar/MessageBar';
+import MessageBar from 'components/MessageBar';
 
 const Container = styled.div`
   padding: 20px;
 `;
 
-const StyledTag = styled(Tag)`
+const StyledTag = styled(TagEditor)`
   margin-top: 20px;
 `;
 

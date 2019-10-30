@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'api/axios';
-import MuiList from '@material-ui/core/List';
-import MuiListItem from '@material-ui/core/ListItem';
-import MessageBar from 'components/basic/MessageBar/MessageBar';
-
+import MessageBar from 'components/MessageBar';
 import DeleteConfirmationModal from './Parts/DeleteConfirmationModal';
 import AddButton from './Parts/AddButton';
-import ListItem from './Parts/ListItem';
+import ListItems from './Parts/ListItems';
 
 const List = () => {
   const [kards, setKards] = useState([]);
@@ -51,19 +48,28 @@ const List = () => {
   const handleDelete = () => deleteKard(kardToDeleteId);
   const handleConfirmationClose = () => setOpenConfirmation(false);
   const handleAddButtonClicked = () => history.push('/');
-  const kardComponents = kards.map(({ _id, title, tags }) => (
-    <MuiListItem key={_id} button>
-      <ListItem
-        title={title}
-        tags={tags}
-        onClick={handleSelect(_id)}
-        onDelete={handleDeleteClick(_id)}
-      />
-    </MuiListItem>
-  ));
+  const handleStar = (id, star) => async () => {
+    if (id) {
+      try {
+        let result;
+        if (star) result = await axios.post(`/kard/remove-star/${id}`);
+        else result = await axios.post(`/kard/add-star/${id}`);
+
+        setKards(kards.map((kard) => (kard._id === id ? result.data : kard)));
+      } catch (error) {
+        setMessage(error.message);
+      }
+    }
+  };
+
   return (
     <>
-      <MuiList component="nav">{kardComponents}</MuiList>
+      <ListItems
+        kards={kards}
+        onClick={handleSelect}
+        onDelete={handleDeleteClick}
+        onStar={handleStar}
+      />
       <MessageBar message={message} onClose={() => setMessage('')} />
       <DeleteConfirmationModal
         open={openConfirmation}

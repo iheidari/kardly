@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Base from 'components/layout/Base';
+import Base from 'components/layout/Base1';
 import DefaultTheme from 'themes/default';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
